@@ -2,29 +2,34 @@ function calculoMotor(tipoNomina, fechaPrimerEmpleo, genero) {
   // Obtener la fecha actual
   var fechaActual = new Date();
 
-  // Calcular el tiempo transcurrido desde la fecha de primer empleo hasta la fecha actual en años
-  var tiempoTranscurrido = (fechaActual - fechaPrimerEmpleo) / (1000 * 60 * 60 * 24 * 365);
+  // Calcular el número de meses desde el primer empleo
+  var tiempoTranscurrido = Math.floor((fechaActual - fechaPrimerEmpleo) / (30 * 24 * 60 * 60 * 1000));
 
-  // Calcular el monto mínimo y máximo de crédito basado en el tipo de nómina y el género
-  var montoMinimo, montoMaximo;
-  if (tipoNomina === 'A' && genero === 'M') {
-    montoMinimo = 5000;
-    montoMaximo = 10000;
-  } else if (tipoNomina === 'A' && genero === 'F') {
-    montoMinimo = 4000;
-    montoMaximo = 8000;
-  } else if (tipoNomina === 'B' && genero === 'M') {
-    montoMinimo = 3000;
-    montoMaximo = 6000;
-  } else if (tipoNomina === 'B' && genero === 'F') {
-    montoMinimo = 2000;
-    montoMaximo = 5000;
-  } else {
-    // Tipo de nómina o género no válido, asignar montos mínimos y máximos por defecto
-    montoMinimo = 0;
-    montoMaximo = 0;
-  }
+    // Definir los montos mínimos y máximos para género masculino y femenino
+    var montosMinimos = {
+        'masculino': {
+          'Nomina A': { min: 5000, max: 20000 },
+          'Nomina B': { min: 3000, max: 15000 },
+          'Nomina C': { min: 3000, max: 15000 },
+          'Nomina D': { min: 3000, max: 15000 }
+        },
+        'femenino': {
+          'Nomina A': { min: 6000, max: 25000 },
+          'Nomina B': { min: 3500, max: 16000 },
+          'Nomina C': { min: 3000, max: 15000 },
+          'Nomina D': { min: 3000, max: 15000 }
+        }
+      };
+    
+      // Obtener los montos mínimos y máximos en función del género y tipo de nómina
+      var montoMinimo = montosMinimos[genero.toLowerCase()][tipoNomina]['min'];
+      var montoMaximo = montosMinimos[genero.toLowerCase()][tipoNomina]['max'];
+    
+      // Calcular la recomendación de línea de crédito como el promedio del monto mínimo y máximo
+      var recomendacionLinea = (montoMinimo + montoMaximo) / 2;
+ 
 
+ 
   // Calcular la recomendación óptima de línea de crédito basada en el tiempo transcurrido
   var recomendacionLinea;
   if (tiempoTranscurrido >= 5) {
@@ -45,4 +50,4 @@ function calculoMotor(tipoNomina, fechaPrimerEmpleo, genero) {
   return resultado;
 }
 
-console.log(calculoMotor('A', '15-01-2019', 'M'));
+console.log(calculoMotor('Nomina A', '15-01-2019', 'masculino'));
